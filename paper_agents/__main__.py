@@ -8,7 +8,9 @@ from .sanitizer import sanitize
 from .reviewer import review
 from .revisioner import revise
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 agents = {
     "polish": polish,
@@ -18,8 +20,12 @@ agents = {
 }
 
 parser = argparse.ArgumentParser("Paper writing agents.")
-parser.add_argument("--config", type=str, default="config.json", help="Path to the configuration file.")
-parser.add_argument("--output_dir", type=str, default="tmp", help="Path to the output directory.")
+parser.add_argument(
+    "--config", type=str, default="config.json", help="Path to the configuration file."
+)
+parser.add_argument(
+    "--output_dir", type=str, default="tmp", help="Path to the output directory."
+)
 parser.add_argument("--role", type=str, default="sanitizer", help="Role of the agent.")
 parser.add_argument("--apply", action="store_true", help="Apply the changes.")
 parser.add_argument("--undo", action="store_true", help="Undo the changes.")

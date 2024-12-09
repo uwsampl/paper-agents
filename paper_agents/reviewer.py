@@ -3,6 +3,7 @@ import logging
 from openai import OpenAI
 from typing import Dict
 
+
 def review(config: Dict, output_dir: pathlib.Path):
     sources = config["sources"]
     bibtex = config["bibtex"]
@@ -13,15 +14,18 @@ def review(config: Dict, output_dir: pathlib.Path):
     for source in map(pathlib.Path, sources):
         with open(source, "r") as f:
             text = f.read()
-        
+
         context += f"{source.name}\n{text}\n\n"
-    
+
     for reviewer_id, reviewer_desc in enumerate(config["reviewers"]):
         logging.info(f"Generating review for reviewer {reviewer_id}...")
         completion = client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "user", "content": f"{config["prompt"]} {context}\n\n <<<end>>> \n\n {reviewer_desc}, now generate your review: "}
+                {
+                    "role": "user",
+                    "content": f"{config["prompt"]} {context}\n\n <<<end>>> \n\n {reviewer_desc}, now generate your review: ",
+                }
             ],
         )
 

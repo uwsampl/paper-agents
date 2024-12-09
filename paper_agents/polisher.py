@@ -3,6 +3,7 @@ import logging
 from openai import OpenAI
 from typing import Dict
 
+
 def polish(config: Dict, output_dir: pathlib.Path):
     sources = config["sources"]
     bibtex = config["bibtex"]
@@ -13,9 +14,9 @@ def polish(config: Dict, output_dir: pathlib.Path):
     for source in map(pathlib.Path, sources):
         with open(source, "r") as f:
             text = f.read()
-        
+
         context += f"{source.name}\n{text}\n\n"
-    
+
     polisher_role = r"""You should spell check and grammar check the tex file, you should improve the coherence of the text, and make sure the text is clear and easy to understand. Your generation should contain a section starts with ```latex and ends with ``` to indicate the polished latex file. Please do not remove any content, only polish the text. """
 
     for source in map(pathlib.Path, sources):
@@ -24,7 +25,10 @@ def polish(config: Dict, output_dir: pathlib.Path):
         completion = client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "user", "content": f"{config["prompt"]} {context}\n\n <<<end>>> \n\n {polisher_role} now please polish the tex file {source.name}: "}
+                {
+                    "role": "user",
+                    "content": f"{config["prompt"]} {context}\n\n <<<end>>> \n\n {polisher_role} now please polish the tex file {source.name}: ",
+                }
             ],
         )
 
