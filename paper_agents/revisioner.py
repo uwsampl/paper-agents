@@ -1,6 +1,6 @@
-import openai
 import logging
 import pathlib
+from openai import OpenAI
 from typing import Dict
 
 
@@ -17,7 +17,7 @@ def revise(config: Dict, output_dir: pathlib.Path):
 
         context += f"{source.name}\n{text}\n\n"
 
-    for reviewer_id in enumerate(config["reviewers"]):
+    for reviewer_id, _ in enumerate(config["reviewers"]):
         with open(output_dir / f"reviewer_{reviewer_id}.txt", "r") as f:
             review = f.read()
 

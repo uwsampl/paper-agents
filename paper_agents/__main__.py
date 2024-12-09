@@ -50,29 +50,24 @@ if args.undo:
         else:
             logging.info(f"No changes to undo for {source}.")
 else:
-    # empty the output directory
-    if pathlib.Path(args.output_dir).exists():
-        for file in output_dir.iterdir():
-            if file.is_file():
-                file.unlink()
-    else:
-        pathlib.Path(args.output_dir).mkdir
+    pathlib.Path(args.output_dir).mkdir(parents=True, exist_ok=True)
 
     agents[args.role](config, output_dir)
 
-    for source in map(pathlib.Path, config["sources"]):
-        new_source = output_dir / source
+    if args.role != "review":
+        for source in map(pathlib.Path, config["sources"]):
+            new_source = output_dir / source
 
-        # use diff to generate patch
-        patch = pathlib.Path(f"{source}.patch")
-        diff = f"diff -u {source} {new_source} > {patch}"
-        logging.info(f"Generating patch {patch}...")
-        logging.info(diff)
-        os.system(diff)
+            # use diff to generate patch
+            patch = pathlib.Path(f"{source}.patch")
+            diff = f"diff -u {source} {new_source} > {patch}"
+            logging.info(f"Generating patch {patch}...")
+            logging.info(diff)
+            os.system(diff)
 
-        if args.apply:
-            # apply patch
-            apply_patch = f"patch {source} < {patch}"
-            logging.info(f"Applying patch {patch}...")
-            logging.info(apply_patch)
-            os.system(apply_patch)
+            if args.apply:
+                # apply patch
+                apply_patch = f"patch {source} < {patch}"
+                logging.info(f"Applying patch {patch}...")
+                logging.info(apply_patch)
+                os.system(apply_patch)
