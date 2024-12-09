@@ -60,18 +60,17 @@ else:
 
     agents[args.role](config, output_dir)
 
-    if args.apply:
-        logging.info("Applying changes...")
-        for source in map(pathlib.Path, config["sources"]):
-            new_source = output_dir / source
+    for source in map(pathlib.Path, config["sources"]):
+        new_source = output_dir / source
 
-            # use diff to generate patch
-            patch = pathlib.Path(f"{source}.patch")
-            diff = f"diff -u {source} {new_source} > {patch}"
-            logging.info(f"Generating patch {patch}...")
-            logging.info(diff)
-            os.system(diff)
+        # use diff to generate patch
+        patch = pathlib.Path(f"{source}.patch")
+        diff = f"diff -u {source} {new_source} > {patch}"
+        logging.info(f"Generating patch {patch}...")
+        logging.info(diff)
+        os.system(diff)
 
+        if args.apply:
             # apply patch
             apply_patch = f"patch {source} < {patch}"
             logging.info(f"Applying patch {patch}...")

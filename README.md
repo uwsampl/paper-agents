@@ -1,6 +1,10 @@
-# Paper agents
+# Paper Agents
+
+Leverage Large Language Models (LLMs) to assist with your paper writing process.
 
 ## Installation
+
+To install the package, run the following command:
 
 ```shell
 pip install -e . -v
@@ -8,4 +12,4 @@ pip install -e . -v
 
 ## Usage
 
-See [examples](examples/README.md).
+For usage examples, refer to the [examples](examples/README.md) directory.
